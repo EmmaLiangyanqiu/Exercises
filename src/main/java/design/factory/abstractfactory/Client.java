@@ -1,5 +1,7 @@
 package design.factory.abstractfactory;
 
+import org.springframework.jdbc.core.RowMapper;
+
 /**
  * Created by Emma on 2018/8/10.
  */
@@ -18,6 +20,8 @@ package design.factory.abstractfactory;
 /*抽象工厂对应的是一个产品族*/
 
 public class Client {
+
+
     public static void main(String[] args) {
         ComputerEngineer computerEngineer=new ComputerEngineer();
         AbstractFactory abstractFactory=new AmdFactory();

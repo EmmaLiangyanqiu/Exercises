@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="info@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1" name="info">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="mysql"/>
+    <schema id="5" parent="1" name="performance_schema"/>
+    <schema id="6" parent="1" name="sakila"/>
+    <schema id="7" parent="1" name="test"/>
+    <schema id="8" parent="1" name="world"/>
+    <table id="9" parent="2" name="customer"/>
+    <table id="10" parent="2" name="cux_todo_items"/>
+    <table id="11" parent="2" name="cux_users"/>
+    <table id="12" parent="2" name="film"/>
+    <table id="13" parent="2" name="language"/>
+    <column id="14" parent="9" name="first_name">
+      <Position>1</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="9" name="id">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <key id="16" parent="9" name="PRIMARY">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="17" parent="10" name="todo_item_id">
+      <Position>1</Position>
+      <Comment>代办事项ID</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="18" parent="10" name="user_id">
+      <Position>2</Position>
+      <Comment>属主用户</Comment>
+      <DataType>varchar(11)|0</DataType>
+    </column>
+    <column id="19" parent="10" name="todo_item_title">
+      <Position>3</Position>
+      <Comment>代办事项标题</Comment>
+      <DataType>varchar(250)|0</DataType>
+    </column>
+    <column id="20" parent="10" name="todo_item_content">
+      <Position>4</Position>
+      <Comment>待办事项内容</Comment>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <column id="21" parent="10" name="priority">
+      <Position>5</Position>
+      <Comment>优先级：LOW/MEDIUM/HIGH</Comment>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="22" parent="10" name="creation_date">
+      <Position>6</Position>
+      <Comment>创建时间</Comment>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="23" parent="10" name="last_update_date">
+      <Position>7</Position>
+      <Comment>更新时间</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="24" parent="10" name="comments">
+      <Position>8</Position>
+      <Comment>备注</Comment>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <key id="25" parent="10" name="PRIMARY">
+      <ColNames>todo_item_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="26" parent="11" name="user_id">
+      <Position>1</Position>
+      <Comment>用户ID</Comment>
+      <DataType>int(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="27" parent="11" name="user_name">
+      <Position>2</Position>
+      <Comment>用户名称</Comment>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="28" parent="11" name="password">
+      <Position>3</Position>
+      <Comment>用户密码</Comment>
+      <DataType>varchar(30)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="29" parent="11" name="sex">
+      <Position>4</Position>
+      <Comment>性别（M-Male/F-Female）</Comment>
+      <DataType>varchar(1)|0</DataType>
+    </column>
+    <column id="30" parent="11" name="age">
+      <Position>5</Position>
+      <Comment>年龄，必须1...200之间</Comment>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="31" parent="11" name="phone_number">
+      <Position>6</Position>
+      <Comment>电话</Comment>
+      <DataType>varchar(11)|0</DataType>
+    </column>
+    <column id="32" parent="11" name="creation_date">
+      <Position>7</Position>
+      <Comment>创建时间</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="33" parent="11" name="last_update_date">
+      <Position>8</Position>
+      <Comment>更新时间</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="34" parent="11" name="comments">
+      <Position>9</Position>
+      <Comment>备注</Comment>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <key id="35" parent="11" name="PRIMARY">
+      <ColNames>user_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="36" parent="12" name="film_id">
+      <Position>1</Position>
+      <DataType>int(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="37" parent="12" name="title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="38" parent="12" name="description">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="39" parent="12" name="language">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="40" parent="12" name="PRIMARY">
+      <ColNames>film_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="41" parent="13" name="language_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="42" parent="13" name="language_name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="43" parent="13" name="language_id">
+      <ColNames>language_id
+language_name</ColNames>
+    </index>
+    <index id="44" parent="13" name="language_name">
+      <ColNames>language_name</ColNames>
+    </index>
+    <key id="45" parent="13" name="PRIMARY">
+      <ColNames>language_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

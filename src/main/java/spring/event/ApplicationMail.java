@@ -19,7 +19,7 @@ public class ApplicationMail {
         System.out.print("内容：");
         String context=input.next();
 
-        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("ioc.xml");
+        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring/ioc.xml");
         ApplicationEventPublisher applicationEventPublisher=applicationContext;
         applicationEventPublisher.publishEvent(new MailEvent(new ApplicationMail(),receivename,title,context));
     }

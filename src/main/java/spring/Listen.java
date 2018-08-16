@@ -12,7 +12,7 @@ public class Listen {
     @Autowired
     private Client client;
 
-    private Listen(){
+    public Listen(){
     }
     /*设及到工厂方法
     * */
