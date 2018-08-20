@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+<bean/>
+
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="springMVC.controller"/>
+
+
+
+
+    <!--&lt;!&ndash; 配置databaseSource &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/storemanager?characterEncoding=utf-8"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="123456"></property>
+        &lt;!&ndash; 连接池初始化连接个数 &ndash;&gt;
+        <property name="initialSize" value="3" />
+        &lt;!&ndash; 连接池的最大值 &ndash;&gt;
+        <property name="maxActive" value="10" />
+        &lt;!&ndash; 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 &ndash;&gt;
+        <property name="maxIdle" value="5" />
+        &lt;!&ndash; 最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 &ndash;&gt;
+        <property name="minIdle" value="2" />
+        &lt;!&ndash; 获取连接最大等待时间 &ndash;&gt;
+        &lt;!&ndash; <property name="maxWait" value="60000" /> &ndash;&gt;
+
+        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
+        <property name="minEvictableIdleTimeMillis" value="25200000" />
+        &lt;!&ndash; 打开removeAbandoned功能 &ndash;&gt;
+        <property name="removeAbandoned" value="true" />
+        &lt;!&ndash; 1800秒，也就是30分钟 &ndash;&gt;
+        <property name="removeAbandonedTimeout" value="1800" />
+        &lt;!&ndash; 关闭abanded连接时输出错误日志 &ndash;&gt;
+        <property name="logAbandoned" value="true" />
+        &lt;!&ndash; 监控数据库 &ndash;&gt;
+        &lt;!&ndash; <property name="filters" value="mergeStat" /> &ndash;&gt;
+        &lt;!&ndash; <property name="filters" value="stat" /> &ndash;&gt;
+    </bean>
+
+    &lt;!&ndash; 配置sessionFactory,用于获取session &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>com/kl/napchen/store/bean/User.hbm.xml</value>
+                <value>com/kl/napchen/store/bean/ProductIn.hbm.xml</value>
+                <value>com/kl/napchen/store/bean/ProductOut.hbm.xml</value>
+                <value>com/kl/napchen/store/bean/ProductType.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.MySQL5Dialect
+                </prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="current_session_context_class">thread</prop>
+            </props>
+        </property>
+
+        &lt;!&ndash; 自动扫描注解方式配置的hibernate类文件 &ndash;&gt;
+        &lt;!&ndash; <property name="packagesToScan"> &ndash;&gt;
+        &lt;!&ndash; <list> &ndash;&gt;
+        &lt;!&ndash; <value>light.mvc.model</value> &ndash;&gt;
+        &lt;!&ndash; </list> &ndash;&gt;
+        &lt;!&ndash; </property> &ndash;&gt;
+    </bean>
+
+    &lt;!&ndash; 配置事务管理器 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+        &lt;!&ndash; <property name="rollbackOnCommitFailure" value="true" /> &ndash;&gt;
+    </bean>
+
+    &lt;!&ndash; 注解方式配置事物 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <tx:annotation-driven transaction-manager="transactionManager" /> &ndash;&gt;
+
+    &lt;!&ndash; AOP方式配置事物 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            &lt;!&ndash; <tx:method name="get*" propagation="REQUIRED" read-only="true" /> &ndash;&gt;
+            &lt;!&ndash; <tx:method name="add*" propagation="REQUIRED" /> &ndash;&gt;
+            <tx:method name="delete" propagation="REQUIRED" />
+            <tx:method name="*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="transactionPointcut"
+                      expression="execution(* com.kl.napchen.store.impl..*.*(..))" />
+        <aop:advisor pointcut-ref="transactionPointcut"
+                     advice-ref="transactionAdvice" />
+    </aop:config>
+
+    &lt;!&ndash; 启用aspectj注解自动代理 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <aop:aspectj-autoproxy />
+
+    &lt;!&ndash; 配置代理bean &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="adviceLog" class="com.kl.napchen.store.annotation.AdviceLog"></bean>
+    <bean id="adviceUserLog" class="com.kl.napchen.store.annotation.AdviceUserLog"></bean>
+
+    &lt;!&ndash; 配置Bean &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="user" class="com.kl.napchen.store.bean.User"></bean>
+    <bean id="productIn" class="com.kl.napchen.store.bean.ProductIn"></bean>
+    <bean id="productOut" class="com.kl.napchen.store.bean.ProductOut"></bean>
+    <bean id="productType" class="com.kl.napchen.store.bean.ProductType"></bean>
+    <bean id="sessionInfo" class="com.kl.napchen.store.global.SessionInfo"></bean>
+    <bean id="pageGrid" class="com.kl.napchen.store.page.PageGrid"></bean>
+
+    &lt;!&ndash; 配置操作数据的Dao &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="userDao" class="com.kl.napchen.store.dao.UserDao"></bean>
+    <bean id="productInDao" class="com.kl.napchen.store.dao.ProductInDao"></bean>
+    <bean id="productOutDao" class="com.kl.napchen.store.dao.ProductOutDao"></bean>
+    <bean id="productTypeDao" class="com.kl.napchen.store.dao.ProductTypeDao"></bean>
+
+    &lt;!&ndash; 配置业务处理的service &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="userImpl" class="com.kl.napchen.store.impl.UserImpl"></bean>
+    <bean id="productInImpl" class="com.kl.napchen.store.impl.ProductInImpl"></bean>
+    <bean id="productOutImpl" class="com.kl.napchen.store.impl.ProductOutImpl"></bean>
+    <bean id="productTypeImpl" class="com.kl.napchen.store.impl.ProductTypeImpl"></bean>
+
+    &lt;!&ndash; 配置控制流程的controller &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <bean id="userController" class="com.kl.napchen.store.controller.UserController"></bean> &ndash;&gt;
+    &lt;!&ndash; <bean id="productInController" class="com.kl.napchen.store.controller.ProductInController"></bean> &ndash;&gt;
+    &lt;!&ndash; <bean id="productOutController" class="com.kl.napchen.store.controller.ProductOutController"></bean> &ndash;&gt;
+    &lt;!&ndash; <bean id="productTypeController" class="com.kl.napchen.store.controller.ProductTypeController"></bean> &ndash;&gt;
+
+
+    &lt;!&ndash; 配置获取spring容器中Bean的工具Bean &ndash;&gt;
+    &lt;!&ndash; 由于持有ApplicationContext, &ndash;&gt;
+    &lt;!&ndash; 可以使用SpringContextHolder.getBean('xx')的静态方法得到spring bean对象 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <bean class="com.kl.napchen.storeManagerSystem.contextHolder.SpringContextHolder"
+        lazy-init="false" /> &ndash;&gt;
+
+    &lt;!&ndash; 对静态资源文件的访问 方案一 （二选一） &ndash;&gt;
+    &lt;!&ndash; 使用"*.do"配置DispatcherServlet时不存在静态资源访问问题 ，拦截器将不会拦截静态资源的URL &ndash;&gt;
+    &lt;!&ndash; 使用"/"配置DispatcherServlet时存在静态资源访问问题,采用以下两种方案解决 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <mvc:default-servlet-handler />
+
+    &lt;!&ndash; 对静态资源文件的访问 方案二 （二选一） &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; 静态资源映射 &ndash;&gt;
+    &lt;!&ndash; <mvc:resources mapping="/js/**" location="/WEB-INF/js/" /> &ndash;&gt;
+    &lt;!&ndash; <mvc:resources mapping="/css/**" location="/WEB-INF/css/" /> &ndash;&gt;
+    &lt;!&ndash; <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/" /> &ndash;&gt;
+    &lt;!&ndash; <mvc:resources mapping="/plugins/**" location="/WEB-INF/plugins/" /> &ndash;&gt;
+    &lt;!&ndash; <mvc:resources mapping="images/**" location="/WEB-INF/images/" /> &ndash;&gt;
+
+    &lt;!&ndash; 默认的注解映射的支持 &ndash;&gt;
+    &lt;!&ndash; 采用这下面种方式将自动装配DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter &ndash;&gt;
+    &lt;!&ndash; 采用这下面种方式将无法在 DefaultAnnotationHandlerMapping配置拦截器 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <mvc:annotation-driven />
+
+    &lt;!&ndash; 配置 DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <bean &ndash;&gt;
+    &lt;!&ndash; class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> &ndash;&gt;
+    &lt;!&ndash; 配置拦截器 &ndash;&gt;
+    &lt;!&ndash; <property name="interceptors"> &ndash;&gt;
+    &lt;!&ndash; <list> &ndash;&gt;
+    &lt;!&ndash; <bean class="com/kl/napchen/storeManagerSystem/interceptor/MyInterceptor"></bean> &ndash;&gt;
+    &lt;!&ndash; </list> &ndash;&gt;
+    &lt;!&ndash; </property> &ndash;&gt;
+    &lt;!&ndash; </bean> &ndash;&gt;
+    &lt;!&ndash; <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        </bean> &ndash;&gt;
+
+    &lt;!&ndash; 隐式地向 Spring容器注册这4个BeanPostProcessor &ndash;&gt;
+    &lt;!&ndash; AutowiredAnnotationBeanPostProcessor、 &ndash;&gt;
+    &lt;!&ndash; RequiredAnnotationBeanPostProcessor、 &ndash;&gt;
+    &lt;!&ndash; CommonAnnotationBeanPostProcessor、 &ndash;&gt;
+    &lt;!&ndash; PersistenceAnnotationBeanPostProcessor &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <context:annotation-config /> &ndash;&gt;
+
+
+    &lt;!&ndash; 设置使用注解的类所在的jar包 ,使用这种即可省去上面的声明 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <context:component-scan base-package="com.kl.napchen.store.controller" />
+    <context:component-scan base-package="com.kl.napchen.store.impl" />
+    <context:component-scan base-package="com.kl.napchen.store.baseService" />
+
+
+    &lt;!&ndash; 映射“/”的url &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    &lt;!&ndash; <mvc:view-controller path="/" view-name="forward:/index2" /> &ndash;&gt;
+
+    &lt;!&ndash; configure the InternalResourceViewResolver &ndash;&gt;
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+            id="internalResourceViewResolver">
+        &lt;!&ndash; <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"
+            /> &ndash;&gt;
+        &lt;!&ndash; 前缀 &ndash;&gt;
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        &lt;!&ndash; 后缀 &ndash;&gt;
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    &lt;!&ndash; 自定义拦截器 （近似-总拦截器） &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <mvc:interceptors>
+        &lt;!&ndash; 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 &ndash;&gt;
+        <bean class="com.kl.napchen.store.interceptor.MyInterceptor" />
+    </mvc:interceptors>
+
+
+    &lt;!&ndash; 总错误处理 &ndash;&gt;
+    &lt;!&ndash; ====================================== &ndash;&gt;
+    <bean id="exceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        &lt;!&ndash; 配置不同类别的错误对应的view和状态码 &ndash;&gt;
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">errors/error</prop>
+                <prop key="java.lang.Throwable">errors/error</prop>
+                &lt;!&ndash; 上传文件大于最大尺寸后转向出错页面 &ndash;&gt;
+                &lt;!&ndash; ====================================== &ndash;&gt;
+                <prop
+                        key="org.springframework.web.multipart.MaxUploadSizeExceededException">errors/uploadError
+                </prop>
+            </props>
+        </property>
+        <property name="statusCodes">
+            <props>
+                <prop key="errors/error">500</prop>
+                <prop key="errors/404">404</prop>
+            </props>
+        </property>
+        &lt;!&ndash; 设置日志输出级别，不定义则默认不输出警告等错误日志信息 &ndash;&gt;
+        <property name="warnLogCategory">
+            <value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
+            </value>
+        </property>
+        &lt;!&ndash; 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 &ndash;&gt;
+        <property name="defaultErrorView" value="errors/error"></property>
+        &lt;!&ndash; 默认HTTP状态码 &ndash;&gt;
+        <property name="defaultStatusCode" value="500"></property>
+    </bean>
+-->
+
+</beans>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+    <style>
+        .row {
+            margin-bottom: 20px;
+        }
+        .row .row{
+            margin-top:15px;
+            margin-bottom: 0;
+        }
+        [class*="col-"] {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: #9d9d9d;
+            background-color: rgba(86,61,124,.15);
+            boder:1px solid #ddd;
+            border:1px solid rgba(86,61,124,2);
+
+        }
+    </style>
+</head>
+<body>
+
+<!--只能有12个-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+        <div class="col-md-1">col-md-1</div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">ol-lg-3</div>
+        <div class="col-lg-3">ol-lg-3</div>
+        <div class="col-lg-3">ol-lg-3</div>
+        <div class="col-lg-3">ol-lg-3</div>
+    </div>
+
+    <!--定位-->
+    <div class="row">
+        <div class="col-lg-3 col-md-offset-2">ol-lg-3</div>
+
+    </div>
+<!--嵌套-->
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-xs-8">first</div>
+                <div class="col-xs-4">second</div>
+            </div>
+        </div>
+    </div>
+
+    <!--排序-->
+    <div class="row">
+        <div class="col-lg-9 col-lg-push-3">col-sm-9 </div>
+        <div class="col-lg-3 col-lg-pll-9">col-lg-3</div>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>
